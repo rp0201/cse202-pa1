@@ -5,8 +5,20 @@
 #   offset 8  : value
 #   offset 16 : next
 sum:
-    retq
+    movq $0, %rax # total = 0
+    movq %rdi, %rcx # ptr = list
 
+.loop:
+    cmpq $0, %rcx # ptr == null
+    je .L1 # if ptr == null end loop
+
+    addq 8(%rcx), %rax # total += ptr->value
+    movq 16(%rcx), %rcx # ptr = ptr->next
+
+    jmp .loop
+
+.L1:
+    retq
 
 # sum of the elements of a linkedlist in C
 # long sum(struct ll *list){
